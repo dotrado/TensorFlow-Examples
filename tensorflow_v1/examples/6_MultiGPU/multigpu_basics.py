@@ -32,8 +32,8 @@ Results on 8 cores with 2 GTX-980:
  * Multi GPU computation time: 0:00:07.131701
 '''
 # Create random large matrix
-A = np.random.rand(10000, 10000).astype('float32')
-B = np.random.rand(10000, 10000).astype('float32')
+A = np.random.rand(100, 100).astype('float32')
+B = np.random.rand(100, 100).astype('float32')
 
 # Create a graph to store results
 c1 = []
@@ -49,8 +49,8 @@ def matpow(M, n):
 Single GPU computing
 '''
 with tf.device('/gpu:0'):
-    a = tf.placeholder(tf.float32, [10000, 10000])
-    b = tf.placeholder(tf.float32, [10000, 10000])
+    a = tf.placeholder(tf.float32, [100, 100])
+    b = tf.placeholder(tf.float32, [100, 100])
     # Compute A^n and B^n and store results in c1
     c1.append(matpow(a, n))
     c1.append(matpow(b, n))
@@ -71,13 +71,13 @@ Multi GPU computing
 # GPU:0 computes A^n
 with tf.device('/gpu:0'):
     # Compute A^n and store result in c2
-    a = tf.placeholder(tf.float32, [10000, 10000])
+    a = tf.placeholder(tf.float32, [100, 100])
     c2.append(matpow(a, n))
 
 # GPU:1 computes B^n
 with tf.device('/gpu:1'):
     # Compute B^n and store result in c2
-    b = tf.placeholder(tf.float32, [10000, 10000])
+    b = tf.placeholder(tf.float32, [100, 100])
     c2.append(matpow(b, n))
 
 with tf.device('/cpu:0'):
